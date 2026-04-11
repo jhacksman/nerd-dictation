@@ -1,0 +1,70 @@
+# Hash-pinned requirements for offline / supply-chain-hardened install of
+# nerd-dictation's Python dependency tree.
+#
+# - All hashes below were captured from PyPI for vosk 0.3.45 and its transitive
+#   dependencies on 2026-04-11. The matching wheels/sdists are committed under
+#   vendor/wheels/.
+#
+# - Use with ./vendor/install-offline.sh which calls:
+#     pip install --require-hashes --no-index --find-links vendor/wheels \
+#         -r vendor/requirements.txt
+#
+# - If any hash below does not match the bytes on disk, pip will refuse to
+#   install. Do NOT "fix" a hash mismatch by regenerating the hash. A mismatch
+#   means either the file was tampered with or you intentionally upgraded a
+#   package. If upgrading, re-run vendor/fetch-wheels.sh and review the diff.
+#
+# - NOTE: vosk's __init__.py eagerly imports srt, requests, tqdm and websockets
+#   at module load, so the full transitive tree is required even though
+#   nerd-dictation itself never uses those libraries. See supply-chain.rst.
+#
+# - Scope: the wheels below target CPython 3.11 on linux x86_64 (manylinux).
+#   For aarch64 / armv7 / other Python versions, extend this file with the
+#   appropriate platform wheels and re-run fetch-wheels.sh.
+
+vosk==0.3.45 \
+    --hash=sha256:25e025093c4399d7278f543568ed8cc5460ac3a4bf48c23673ace1e25d26619f
+
+cffi==2.0.0 \
+    --hash=sha256:8941aaadaf67246224cee8c3803777eed332a19d909b47e29c9842ef1e79ac26
+
+pycparser==3.0 \
+    --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992
+
+# NOTE: srt is published on PyPI only as an sdist (srt-3.5.3.tar.gz,
+# sha256 4884315043a4f0740fd1f878ed6caa376ac06d70e135f306a6dc44632eed0cc0),
+# which would force setup.py to execute at install time. To avoid that we
+# build srt-3.5.3-py3-none-any.whl from that exact sdist ourselves and vendor
+# the resulting wheel. vendor/fetch-wheels.sh rebuilds this wheel
+# reproducibly: it downloads the sdist, verifies its upstream PyPI hash,
+# installs a pinned build toolchain (pip==24.2, setuptools==75.1.0,
+# wheel==0.44.0), sets SOURCE_DATE_EPOCH=1577836800 and PYTHONHASHSEED=0,
+# then runs `pip wheel`. Under those conditions the build is bit-identical
+# and matches the hash below. A rebuild with different build tooling will
+# produce a different hash and fetch-wheels.sh will refuse to overwrite the
+# committed wheel. We have reviewed srt-3.5.3/setup.py: it only calls
+# setuptools.setup() with static metadata. Any upgrade of this pin should
+# re-audit the sdist.
+srt==3.5.3 \
+    --hash=sha256:3ff933a839d71554f022b84bb0135fca4e05bfeb815938cf419f0a90d320905e
+
+requests==2.33.1 \
+    --hash=sha256:4e6d1ef462f3626a1f0a0a9c42dd93c63bad33f9f1c1937509b8c5c8718ab56a
+
+charset-normalizer==3.4.7 \
+    --hash=sha256:2fe249cb4651fd12605b7288b24751d8bfd46d35f12a20b1ba33dea122e690df
+
+idna==3.11 \
+    --hash=sha256:771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea
+
+urllib3==2.6.3 \
+    --hash=sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4
+
+certifi==2026.2.25 \
+    --hash=sha256:027692e4402ad994f1c42e52a4997a9763c646b73e4096e4d5d6db8af1d6f0fa
+
+tqdm==4.67.3 \
+    --hash=sha256:ee1e4c0e59148062281c49d80b25b67771a127c85fc9676d3be5f243206826bf
+
+websockets==16.0 \
+    --hash=sha256:08d7af67b64d29823fed316505a89b86705f2b7981c07848fb5e3ea3020c1abe

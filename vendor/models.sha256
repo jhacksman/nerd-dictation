@@ -1,0 +1,17 @@
+# Pinned SHA256 hashes for known VOSK speech models.
+#
+# Format is the same as `sha256sum` output, so this file can be verified with:
+#     (cd <dir-containing-zips> && sha256sum -c models.sha256)
+#
+# Models are NOT committed to git (they are 40 MB to 2 GB). Instead,
+# vendor/fetch-model.sh downloads a model from alphacephei.com over HTTPS and
+# verifies it against the hash below before unpacking.
+#
+# To add another model: download it once, `sha256sum` it, and add the line
+# below along with a brief comment describing what it is.
+#
+# Source: https://alphacephei.com/vosk/models
+
+# Small English (US) model, ~40 MB. This is what the README suggests as a
+# starter. Good enough for dictation experiments; not the most accurate.
+30f26242c4eb449f948e42cb302dd7a686cb29a3423a8367f99ff41780942498  vosk-model-small-en-us-0.15.zip

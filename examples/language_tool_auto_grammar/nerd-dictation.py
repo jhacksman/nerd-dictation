@@ -1,3 +1,14 @@
+# !!! SECURITY / PRIVACY WARNING !!!
+#
+# This example is the ONLY piece of nerd-dictation that sends data over the
+# network. If you load it via --config, every transcribed sentence will be
+# POSTed to https://api.languagetoolplus.com/v2/check over HTTPS using the
+# third-party `requests` library. Read SECURITY.rst next to this file before
+# using it, and point `langtool()` at a local LanguageTool server if you want
+# grammar correction without the remote API call.
+#
+# ---
+#
 # This example has minimal configuration and lets Language Tool do the work to
 # make it look right. (I am not at all affiliated with Language tool, I just
 # found it useful to work with nerd-dictation.)
